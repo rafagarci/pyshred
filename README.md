@@ -22,6 +22,24 @@ optional arguments:
   -P [processes]       limit to P processes shredding at a time, one per file (default: 1)
 ```
 
+## CLI
+
+You can run the script directly from a command-line as follows
+
+PowerShell:
+
+```powershell
+(Invoke-WebRequest https://raw.githubusercontent.com/rafagarci/pyshred/main/pyshred.py).content | Out-File -Encoding utf8 pyshred.py; if($?){python3 .\pyshred.py <arguments here>; python3 .\pyshred.py -zu .\pyshred.py}
+```
+
+Unix:
+
+```bash
+if curl -sSfo pyshred.py https://raw.githubusercontent.com/rafagarci/pyshred/main/pyshred.py; then python3 pyshred.py <arguments here>; python3 pyshred.py -zu pyshred.py; fi
+```
+
+Note that the above downloads `pyshred.py` into the running directory, uses it to shred the desired files, and finally shreds and unlinks `pyshred.py`.
+
 ## Caution
 
 Just like Unix's [`shred`](https://en.wikipedia.org/wiki/Shred_(Unix)#:~:text=shred%20is%20a%20command%20on,part%20of%20GNU%20Core%20Utilities.) command, this script relies on a very important assumption: that the file system overwrites data in place. This is the traditional way to  do things, but many modern file system designs do not satisfy this assumption.
